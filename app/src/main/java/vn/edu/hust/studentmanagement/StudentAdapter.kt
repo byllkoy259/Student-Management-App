@@ -27,6 +27,12 @@ class StudentAdapter(
         return StudentViewHolder(view)
     }
 
+    fun updateData(newList: List<Student>) {
+        (studentList as MutableList).clear()
+        (studentList as MutableList).addAll(newList)
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         val student = studentList[position]
         holder.tvName.text = student.hoTen

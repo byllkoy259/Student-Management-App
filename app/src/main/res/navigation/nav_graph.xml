@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/studentListFragment">
+
+    <fragment
+        android:id="@+id/studentListFragment"
+        android:name="vn.edu.hust.studentmanagement.StudentListFragment"
+        android:label="Danh sách sinh viên"
+        tools:layout="@layout/fragment_student_list">
+        <action
+            android:id="@+id/action_list_to_add"
+            app:destination="@id/addStudentFragment" />
+        <action
+            android:id="@+id/action_list_to_detail"
+            app:destination="@id/studentDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addStudentFragment"
+        android:name="vn.edu.hust.studentmanagement.AddStudentFragment"
+        android:label="Thêm sinh viên"
+        tools:layout="@layout/fragment_add_student" />
+
+    <fragment
+        android:id="@+id/studentDetailFragment"
+        android:name="vn.edu.hust.studentmanagement.StudentDetailFragment"
+        android:label="Chi tiết sinh viên"
+        tools:layout="@layout/fragment_student_detail">
+        <argument
+            android:name="student"
+            app:argType="vn.edu.hust.studentmanagement.Student" />
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </fragment>
+</navigation>
