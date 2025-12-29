@@ -1,40 +1,37 @@
 package vn.edu.hust.studentmanagement
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class StudentViewModel : ViewModel() {
-    private val _studentList = MutableLiveData<MutableList<Student>>()
-
-    val studentList: LiveData<MutableList<Student>> get() = _studentList
+class StudentViewModel(application: Application) : AndroidViewModel(application) {
+    private val dao: StudentDataAccessObject
+    val studentList: LiveData<List<Student>>
 
     init {
-        _studentList.value = mutableListOf(
-            Student("2020001", "Nguyễn Văn A", "0987654321", "Hà Nội"),
-            Student("2020002", "Trần Thị B", "0912345678", "Đà Nẵng")
-        )
+        val database = StudentDB.getDatabase(application)
+        dao = database.studentDao()
+        studentList = dao.getAllStudents()
     }
 
     fun addStudent(student: Student) {
-        val currentList = _studentList.value ?: mutableListOf()
-        currentList.add(student)
-        _studentList.value = currentList
-    }
-
-    fun updateStudent(position: Int, newStudent: Student) {
-        val currentList = _studentList.value ?: return
-        if (position in currentList.indices) {
-            currentList[position] = newStudent
-            _studentList.value = currentList
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.insertStudent(student)
         }
     }
 
-    fun deleteStudent(position: Int) {
-        val currentList = _studentList.value ?: return
-        if (position in currentList.indices) {
-            currentList.removeAt(position)
-            _studentList.value = currentList
+    fun updateStudent(student: Student) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.updateStudent(student)
+        }
+    }
+
+    fun deleteStudent(student: Student) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.deleteStudent(student)
         }
     }
 }

@@ -42,4 +42,13 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+            ?.childFragmentManager?.fragments?.firstOrNull() as? FileManagerFragment
+        if (fragment != null && fragment.goBack()) {
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

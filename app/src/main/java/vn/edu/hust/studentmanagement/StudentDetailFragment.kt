@@ -43,13 +43,16 @@ class StudentDetailFragment : Fragment() {
                 binding.edtPhone.text.toString(),
                 binding.edtAddress.text.toString()
             )
-            viewModel.updateStudent(position, updatedStudent)
+            viewModel.updateStudent(updatedStudent)
             findNavController().popBackStack()
         }
 
         binding.btnDelete.setOnClickListener {
-            viewModel.deleteStudent(position)
-            findNavController().popBackStack()
+            val currentStudent = arguments?.getSerializable("student") as? Student
+            if (currentStudent != null) {
+                viewModel.deleteStudent(currentStudent)
+                findNavController().popBackStack()
+            }
         }
     }
 }
